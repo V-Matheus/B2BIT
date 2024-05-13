@@ -1,11 +1,12 @@
 import React from 'react'
-import './App.css'
+import './styles/index.css'
+import Auth from './components/Auth'
 
 const App: React.FC = () => {
   return (
-    <>
-      <h1 className='text-red-800'>Hello Word</h1>
-    </>
+    <div className='flex items-center justify-center h-screen '>
+     <Auth />
+    </div>
   )
 }
 
