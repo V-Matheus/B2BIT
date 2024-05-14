@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import logo from '../assets/logo.svg';
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
+import { useNavigate } from 'react-router-dom';
 
 interface DadosUserProps {
   tokens: {
@@ -22,6 +23,8 @@ interface DadosUserProps {
 }
 
 export const Auth: React.FC = () => {
+  const navigate = useNavigate();
+
   const LoginSchema = Yup.object().shape({
     email: Yup.string().email('Invalid email').required('Required'),
     password: Yup.string()
@@ -30,13 +33,13 @@ export const Auth: React.FC = () => {
       .required('Required'),
   });
 
+  const data = {
+    email: 'cliente@youdrive.com',
+    password: 'password',
+  };
+
   useEffect(() => {
     async function login() {
-      const data = {
-        email: 'cliente@youdrive.com',
-        password: 'password',
-      };
-
       try {
         const response = await fetch(
           'https://api.homologation.cliqdrive.com.br/auth/login/',
@@ -60,7 +63,7 @@ export const Auth: React.FC = () => {
     }
 
     login();
-  }, []);
+  }, [data]);
 
   return (
     <main className="border-4 border-none py-8 px-5 w-[438px] shadow-3xl rounded-3xl">
@@ -75,7 +78,12 @@ export const Auth: React.FC = () => {
         }}
         validationSchema={LoginSchema}
         onSubmit={(values) => {
-          console.log(values);
+          if (
+            values.email === data.email &&
+            values.password === data.password
+          ) {
+            navigate('profile');
+          }
         }}
       >
         {({ errors, touched, setTouched }) => (

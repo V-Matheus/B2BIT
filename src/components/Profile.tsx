@@ -3,7 +3,7 @@ import profileSkeleton from '../assets/profileSkeleton.jpg';
 
 export const Profile: React.FC = () => {
   return (
-    <body className="bg-gray-200 h-screen flex flex-col justify-center items-center">
+    <body className="flex flex-col justify-center items-center">
       <header className="fixed top-0 left-0 w-full bg-white z-10">
         <div className="flex justify-end">
           <button className="bg-blue-950 text-gray-100 rounded-lg m-4 w-40">
@@ -12,7 +12,7 @@ export const Profile: React.FC = () => {
         </div>
       </header>
 
-      <main className="border-4 bg-white border-none py-8 px-5 w-[438px] shadow-md rounded-3xl">
+      <main className="bg-white border-none py-8 px-5 w-[438px] shadow-md rounded-3xl">
         <div className="flex flex-col justify-center items-center text-center">
           <h1>Profile picture</h1>
           <img className='rounded-lg' src={profileSkeleton} width={58} alt="" />
