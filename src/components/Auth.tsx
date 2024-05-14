@@ -78,35 +78,61 @@ const Auth: React.FC = () => {
           console.log(values);
         }}
       >
-        {() => (
-          <Form action="" className="flex flex-col w-full gap-2 mt-5">
-            <label className="text-lg w-full" htmlFor="email">
-              E-mail
-            </label>
-            <Field
-              className="font-normal bg-gray-100 pl-2 rounded-md"
-              name="email"
-              id="email"
-              type="email"
-              placeholder="@gmail.com"
-            />
-
-            <div className='flex justify-between  w-full'>
-              <label className="text-lg self-center" htmlFor="password">
-                Password
-              </label>
+        {({ errors, touched, setTouched }) => (
+          <Form action="" className="flex flex-col w-full gap-5 mt-5">
+            <div>
+              <div className="flex justify-between w-full">
+                <label
+                  className="text-center text-lg self-center"
+                  htmlFor="email"
+                >
+                  E-mail
+                </label>
+                {errors.email && touched.email && (
+                  <span className="text-red-400">{errors.email}</span>
+                )}
+              </div>
+              <Field
+                className={`font-normal bg-gray-100 pl-2 rounded-md w-full ${
+                  errors.email && touched.email ? 'border-2 border-red-400' : ''
+                }`}
+                name="email"
+                id="email"
+                type="email"
+                placeholder="@gmail.com"
+                onBlur={() => setTouched({ ...touched, email: true })}
+              />
             </div>
-            <Field
-              className="font-normal bg-gray-100 pl-2 rounded-md"
-              name="password"
-              id="password"
-              type="password"
-              placeholder="****************"
-            />
+
+            <div>
+              <div className="flex justify-between w-full">
+                <label
+                  className="text-center text-lg self-center"
+                  htmlFor="password"
+                >
+                  Password
+                </label>
+                {errors.password && touched.password && (
+                  <span className="text-red-400">{errors.password}</span>
+                )}
+              </div>
+              <Field
+                className={`font-normal bg-gray-100 pl-2 rounded-md w-full ${
+                  errors.password && touched.password
+                    ? 'border-2 border-red-400'
+                    : ''
+                }`}
+                name="password"
+                id="password"
+                type="password"
+                placeholder="****************"
+                onBlur={() => setTouched({ ...touched, password: true })}
+              />
+            </div>
 
             <button
               type="submit"
-              className="bg-blue-950 text-gray-100 rounded-lg"
+              className="bg-blue-950 text-gray-100 rounded-lg mt-5"
             >
               Sign In
             </button>
