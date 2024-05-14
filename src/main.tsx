@@ -4,18 +4,18 @@ import App from './App.tsx'
 import './styles/index.css'
 import './styles/globalStyles.css'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
-import Profile from './routes/Profile.tsx'
+import {Profile} from './components/Profile.tsx'
 
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <App />
-  }, 
+    element: <App />,
+  },
   {
     path: '/profile',
-    element: <Profile />
-  }
-])
+    element: <Profile />,
+  },
+]);
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>

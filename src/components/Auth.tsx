@@ -21,7 +21,7 @@ interface DadosUserProps {
   };
 }
 
-const Auth: React.FC = () => {
+export const Auth: React.FC = () => {
   const LoginSchema = Yup.object().shape({
     email: Yup.string().email('Invalid email').required('Required'),
     password: Yup.string()
@@ -142,5 +142,3 @@ const Auth: React.FC = () => {
     </main>
   );
 };
-
-export default Auth;

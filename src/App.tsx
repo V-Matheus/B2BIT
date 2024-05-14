@@ -1,13 +1,13 @@
-import React from 'react'
-import './styles/index.css'
-import Auth from './components/Auth'
+import React from 'react';
+import './styles/index.css';
+import { Auth } from './components/Auth';
 
 const App: React.FC = () => {
   return (
-    <div className='flex items-center justify-center h-screen'>
-     <Auth />
+    <div className="fixed inset-0 flex justify-center items-center">
+      <Auth />
     </div>
-  )
-}
+  );
+};
 
-export default App
+export default App;
