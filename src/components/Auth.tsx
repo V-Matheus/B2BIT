@@ -1,10 +1,40 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import logo from '../assets/logo.svg';
 
 const Auth: React.FC = () => {
+  useEffect(() => {
+    async function login() {
+      const data = {
+        email: 'cliente@youdrive.com',
+        password: 'password',
+      };
+    
+      try {
+        const response = await fetch('https://api.homologation.cliqdrive.com.br/auth/login/', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json;version=v1_web',
+          },
+          body: JSON.stringify(data),
+        });
+
+        console.log(response);
+      } catch (error) {
+        console.error('Erro:', error);
+      }
+    }
+
+    login();
+  }, []);
+
+  function handleLogin(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
+    event.preventDefault();
+  }
+
   return (
     <main className="border-4 border-none py-8 px-5 w-[438px] shadow-3xl rounded-3xl">
-      <div className='flex justify-center'>
+      <div className="flex justify-center">
         <img src={logo} width="309.6px" height="94.81px" alt="Logo b2bit" />
       </div>
 
@@ -29,7 +59,10 @@ const Auth: React.FC = () => {
           placeholder="****************"
         />
 
-        <button className="bg-blue-950 text-gray-100 rounded-lg">
+        <button
+          onClick={(event) => handleLogin(event)}
+          className="bg-blue-950 text-gray-100 rounded-lg"
+        >
           Sign In
         </button>
       </form>
