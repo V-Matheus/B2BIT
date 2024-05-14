@@ -8,18 +8,24 @@ const Auth: React.FC = () => {
         email: 'cliente@youdrive.com',
         password: 'password',
       };
-    
-      try {
-        const response = await fetch('https://api.homologation.cliqdrive.com.br/auth/login/', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json;version=v1_web',
-          },
-          body: JSON.stringify(data),
-        });
 
-        console.log(response);
+      try {
+        const response = await fetch(
+          'https://api.homologation.cliqdrive.com.br/auth/login/',
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              Accept: 'application/json;version=v1_web',
+            },
+            body: JSON.stringify(data),
+          },
+        );
+
+        const dadosUser = await response.json();
+        const tokenUser = dadosUser.tokens.access;
+
+        localStorage.setItem('tokenUser', tokenUser);
       } catch (error) {
         console.error('Erro:', error);
       }
