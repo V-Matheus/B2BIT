@@ -1,6 +1,24 @@
 import React, { useEffect } from 'react';
 import logo from '../assets/logo.svg';
 
+interface DadosUserProps {
+  tokens: {
+    access: string,
+    refresh: string
+  },
+  user: {
+    avatar: string | null,
+    created: string,
+    email: string,
+    id: number,
+    is_active: boolean,
+    modified: string,
+    name: string,
+    role: string,
+    type: string
+  }
+}
+
 const Auth: React.FC = () => {
   useEffect(() => {
     async function login() {
@@ -22,8 +40,8 @@ const Auth: React.FC = () => {
           },
         );
 
-        const dadosUser = await response.json();
-        const tokenUser = dadosUser.tokens.access;
+        const dadosUser: DadosUserProps = await response.json();
+        const tokenUser = dadosUser.tokens.access
 
         localStorage.setItem('tokenUser', tokenUser);
       } catch (error) {
