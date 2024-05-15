@@ -18,7 +18,7 @@ export const Profile: React.FC = () => {
 
   const navigate = useNavigate();
 
-  const { searchUserData } = useUserData();
+  const { searchUserData, loading } = useUserData();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -28,6 +28,7 @@ export const Profile: React.FC = () => {
     };
 
     fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   function handleLogout() {
@@ -41,7 +42,7 @@ export const Profile: React.FC = () => {
         <div className="flex justify-end">
           <button
             onClick={handleLogout}
-            className="bg-blue-950 text-gray-100 rounded-lg m-4 w-40"
+            className="bg-blue-950 text-gray-100 rounded-lg m-4 w-40 hover:bg-blue-700 transition-all"
           >
             Logout
           </button>
@@ -51,25 +52,44 @@ export const Profile: React.FC = () => {
       <main className="bg-white border-none py-8 px-5 w-[438px] shadow-md rounded-3xl">
         <div className="flex flex-col justify-center items-center text-center">
           <h1>Profile picture</h1>
-          <img
-            className="rounded-lg"
-            src={userDados.avatar ? userDados.avatar : profileSkeleton}
-            width={58}
-            alt=""
-          />
+
+          {loading ? (
+            <div
+              className="inline-block h-6 w-6 animate-spin rounded-full border-4 border-solid border-current border-e-transparent align-[-0.125em] text-surface motion-reduce:animate-[spin_1.5s_linear_infinite] dark:text-black"
+              role="status"
+            ></div>
+          ) : (
+            <img
+              className="rounded-lg"
+              src={userDados.avatar ? userDados.avatar : profileSkeleton}
+              width={58}
+              alt=""
+            />
+          )}
         </div>
 
         <div className="flex flex-col gap-4">
           <div className="flex w-full flex-col">
-            <label className="text-lg font-normal">
+            <p className="text-lg font-normal">
               Your <strong>Name</strong>
-            </label>
+            </p>
 
-            <input
+            {/* <input
               disabled
               className="font-normal bg-gray-100 pl-2 rounded-md w-full"
               value={userDados.name}
-            />
+            /> */}
+
+            <h1 className="font-normal bg-gray-100 pl-2 rounded-md w-full">
+              {loading ? (
+                <div
+                  className="inline-block h-6 w-6 animate-spin rounded-full border-4 border-solid border-current border-e-transparent align-[-0.125em] text-surface motion-reduce:animate-[spin_1.5s_linear_infinite] dark:text-black"
+                  role="status"
+                ></div>
+              ) : (
+                `${userDados.name}`
+              )}
+            </h1>
           </div>
 
           <div className="flex w-full flex-col">
@@ -77,11 +97,16 @@ export const Profile: React.FC = () => {
               Your <strong>E-mail</strong>
             </label>
 
-            <input
-              disabled
-              className="font-normal bg-gray-100 pl-2 rounded-md w-full"
-              value={userDados.email}
-            />
+            <h1 className="font-normal bg-gray-100 pl-2 rounded-md w-full">
+              {loading ? (
+                <div
+                  className="inline-block h-6 w-6 animate-spin rounded-full border-4 border-solid border-current border-e-transparent align-[-0.125em] text-surface motion-reduce:animate-[spin_1.5s_linear_infinite] dark:text-black"
+                  role="status"
+                ></div>
+              ) : (
+                `${userDados.email}`
+              )}
+            </h1>
           </div>
         </div>
       </main>

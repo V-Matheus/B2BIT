@@ -13,7 +13,7 @@ export const Auth: React.FC = () => {
       .required('Required'),
   });
 
-  const { login, autoLogin } = useUserData();
+  const { login, autoLogin, loading } = useUserData();
 
   useEffect(() => {
     const token = localStorage.getItem('tokenUser');
@@ -90,9 +90,17 @@ export const Auth: React.FC = () => {
 
             <button
               type="submit"
-              className="bg-blue-950 text-gray-100 rounded-lg mt-5"
+              className="bg-blue-950 text-gray-100 rounded-lg mt-5 flex items-center justify-center gap-5 h-14 hover:bg-blue-700 transition-all"
+              disabled={loading}
             >
-              Sign In
+              {loading ? (
+                <div
+                  className="inline-block h-6 w-6 animate-spin rounded-full border-4 border-solid border-current border-e-transparent align-[-0.125em] text-surface motion-reduce:animate-[spin_1.5s_linear_infinite] dark:text-white"
+                  role="status"
+                ></div>
+              ) : (
+                'Sign In'
+              )}
             </button>
           </Form>
         )}
