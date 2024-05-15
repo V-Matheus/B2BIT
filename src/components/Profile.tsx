@@ -37,7 +37,7 @@ export const Profile: React.FC = () => {
   }
 
   return (
-    <div className="flex flex-col justify-center items-center">
+    <>
       <header className="fixed top-0 left-0 w-full bg-white z-10">
         <div className="flex justify-end">
           <button
@@ -49,7 +49,7 @@ export const Profile: React.FC = () => {
         </div>
       </header>
 
-      <main className="bg-white border-none py-8 px-5 w-[438px] shadow-md rounded-3xl">
+      <main className="border-4 border-none py-8 px-5 w-[438px] shadow-3xl rounded-3xl">
         <div className="flex flex-col justify-center items-center text-center">
           <h1>Profile picture</h1>
 
@@ -110,6 +110,6 @@ export const Profile: React.FC = () => {
           </div>
         </div>
       </main>
-    </div>
+    </>
   );
 };

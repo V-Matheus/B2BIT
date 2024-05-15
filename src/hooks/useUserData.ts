@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import axios from 'axios';
+import axios from '../api/BaseService';
 
 interface LoginProps {
   tokens: {
@@ -95,7 +95,7 @@ const useUserData = () => {
       const userData: SearchUserDataProps = await response.data;
       return userData;
     } catch (error) {
-      toast.error('Error when fetching user data', {
+      toast.error('Error when fetching user data. Redirecting to home', {
         position: 'bottom-right',
         autoClose: 5000,
         hideProgressBar: false,
