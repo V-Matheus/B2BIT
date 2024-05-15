@@ -1,30 +1,9 @@
-import React, { useEffect } from 'react';
 import logo from '../assets/logo.svg';
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
-import { useNavigate } from 'react-router-dom';
-
-interface DadosUserProps {
-  tokens: {
-    access: string;
-    refresh: string;
-  };
-  user: {
-    avatar: string | null;
-    created: string;
-    email: string;
-    id: number;
-    is_active: boolean;
-    modified: string;
-    name: string;
-    role: string;
-    type: string;
-  };
-}
+import useUserData from '../hooks/useUserData';
 
 export const Auth: React.FC = () => {
-  const navigate = useNavigate();
-
   const LoginSchema = Yup.object().shape({
     email: Yup.string().email('Invalid email').required('Required'),
     password: Yup.string()
@@ -33,37 +12,8 @@ export const Auth: React.FC = () => {
       .required('Required'),
   });
 
-  const data = {
-    email: 'cliente@youdrive.com',
-    password: 'password',
-  };
+  const { login } = useUserData();
 
-  useEffect(() => {
-    async function login() {
-      try {
-        const response = await fetch(
-          'https://api.homologation.cliqdrive.com.br/auth/login/',
-          {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              Accept: 'application/json;version=v1_web',
-            },
-            body: JSON.stringify(data),
-          },
-        );
-
-        const dadosUser: DadosUserProps = await response.json();
-        const tokenUser = dadosUser.tokens.access;
-
-        localStorage.setItem('tokenUser', tokenUser);
-      } catch (error) {
-        console.error('Erro:', error);
-      }
-    }
-
-    login();
-  }, [data]);
 
   return (
     <main className="border-4 border-none py-8 px-5 w-[438px] shadow-3xl rounded-3xl">
@@ -78,12 +28,7 @@ export const Auth: React.FC = () => {
         }}
         validationSchema={LoginSchema}
         onSubmit={(values) => {
-          if (
-            values.email === data.email &&
-            values.password === data.password
-          ) {
-            navigate('profile');
-          }
+          login(values.email, values.password)
         }}
       >
         {({ errors, touched, setTouched }) => (

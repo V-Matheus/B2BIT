@@ -18,7 +18,7 @@ export const Profile: React.FC = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    async function login() {
+    async function searchUserData() {
       try {
         const token = localStorage.getItem('tokenUser');
 
@@ -45,7 +45,7 @@ export const Profile: React.FC = () => {
       }
     }
 
-    login();
+    searchUserData();
   }, []);
 
   function handleLogout() {
@@ -54,7 +54,7 @@ export const Profile: React.FC = () => {
   }
 
   return (
-    <body className="flex flex-col justify-center items-center">
+    <div className="flex flex-col justify-center items-center">
       <header className="fixed top-0 left-0 w-full bg-white z-10">
         <div className="flex justify-end">
           <button
@@ -103,6 +103,6 @@ export const Profile: React.FC = () => {
           </div>
         </div>
       </main>
-    </body>
+    </div>
   );
 };
