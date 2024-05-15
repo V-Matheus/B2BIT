@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import axios from 'axios';
 
 interface LoginProps {
   tokens: {
@@ -40,25 +41,21 @@ const useUserData = () => {
         return null;
       }
 
-      const response = await fetch(
+      const response = await axios.post(
         'https://api.homologation.cliqdrive.com.br/auth/login/',
+        { email, password },
         {
-          method: 'POST',
           headers: {
             'Content-Type': 'application/json',
             Accept: 'application/json;version=v1_web',
           },
-          body: JSON.stringify({ email, password }),
         },
       );
 
-      const loginData: LoginProps = await response.json();
+      const loginData: LoginProps = await response.data;
       const tokenUser = loginData.tokens.access;
 
       localStorage.setItem('tokenUser', tokenUser);
-
-      if (email === 'cliente@youdrive.com' && password === 'password')
-        navigate('/profile');
     } catch (error) {
       toast.error('Invalid email or password', {
         position: 'bottom-right',
@@ -84,10 +81,9 @@ const useUserData = () => {
         return null;
       }
 
-      const response = await fetch(
+      const response = await axios.get(
         'https://api.homologation.cliqdrive.com.br/auth/profile/',
         {
-          method: 'GET',
           headers: {
             Authorization: `Bearer ${token}`,
             Accept: 'application/json;version=v1_web',
@@ -96,7 +92,7 @@ const useUserData = () => {
         },
       );
 
-      const userData: SearchUserDataProps = await response.json();
+      const userData: SearchUserDataProps = await response.data;
       return userData;
     } catch (error) {
       toast.error('Error when fetching user data', {
