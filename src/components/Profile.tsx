@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react';
 import profileSkeleton from '../assets/profileSkeleton.jpg';
 import { useNavigate } from 'react-router-dom';
+import useUserData from '../hooks/useUserData';
+import { useEffect, useState } from 'react';
 
 interface UserDadosProps {
   name: string;
@@ -17,35 +18,16 @@ export const Profile: React.FC = () => {
 
   const navigate = useNavigate();
 
+  const { searchUserData } = useUserData();
+
   useEffect(() => {
-    async function searchUserData() {
-      try {
-        const token = localStorage.getItem('tokenUser');
+    const fetchData = async () => {
+      const token = localStorage.getItem('tokenUser');
+      const userData = await searchUserData(token);
+      if (userData) setUserDados(userData);
+    };
 
-        const response = await fetch(
-          'https://api.homologation.cliqdrive.com.br/auth/profile/',
-          {
-            method: 'GET',
-            headers: {
-              Authorization: `Bearer ${token}`,
-              Accept: 'application/json;version=v1_web',
-              'Content-Type': 'application/json',
-            },
-          },
-        );
-
-        const dadosUser: UserDadosProps = await response.json();
-        setUserDados({
-          name: dadosUser.name,
-          email: dadosUser.email,
-          avatar: dadosUser.avatar,
-        });
-      } catch (error) {
-        console.error('Erro:', error);
-      }
-    }
-
-    searchUserData();
+    fetchData();
   }, []);
 
   function handleLogout() {

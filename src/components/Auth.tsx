@@ -2,6 +2,7 @@ import logo from '../assets/logo.svg';
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 import useUserData from '../hooks/useUserData';
+import { useEffect } from 'react';
 
 export const Auth: React.FC = () => {
   const LoginSchema = Yup.object().shape({
@@ -12,8 +13,12 @@ export const Auth: React.FC = () => {
       .required('Required'),
   });
 
-  const { login } = useUserData();
+  const { login, autoLogin } = useUserData();
 
+  useEffect(() => {
+    const token = localStorage.getItem('tokenUser');
+    autoLogin(token);
+  }, [autoLogin]);
 
   return (
     <main className="border-4 border-none py-8 px-5 w-[438px] shadow-3xl rounded-3xl">
@@ -28,7 +33,7 @@ export const Auth: React.FC = () => {
         }}
         validationSchema={LoginSchema}
         onSubmit={(values) => {
-          login(values.email, values.password)
+          login(values.email, values.password);
         }}
       >
         {({ errors, touched, setTouched }) => (

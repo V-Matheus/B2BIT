@@ -26,12 +26,6 @@ interface SearchUserDataProps {
 }
 
 const useUserData = () => {
-  const [userData, setUserData] = useState<SearchUserDataProps>({
-    name: '',
-    email: '',
-    avatar: '',
-  });
-
   const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
@@ -40,7 +34,10 @@ const useUserData = () => {
     try {
       setLoading(true);
       const token = localStorage.getItem('tokenUser');
-      if (token) navigate('/profile');
+      if (token) {
+        navigate('/profile');
+        return null;
+      }
 
       const response = await fetch(
         'https://api.homologation.cliqdrive.com.br/auth/login/',
@@ -68,12 +65,16 @@ const useUserData = () => {
     }
   };
 
-  const searchUserData = async () => {
+  const searchUserData = async (token: string | null) => {
     try {
       setLoading(true);
-      const token = localStorage.getItem('tokenUser');
-      
-      if (!token) navigate('/');
+      // const token = localStorage.getItem('tokenUser');
+
+      if (!token) {
+        navigate('/');
+        return null;
+      }
+
       const response = await fetch(
         'https://api.homologation.cliqdrive.com.br/auth/profile/',
         {
@@ -87,7 +88,7 @@ const useUserData = () => {
       );
 
       const userData: SearchUserDataProps = await response.json();
-      setUserData(userData);
+      return userData;
     } catch (error) {
       console.error('Erro ao buscar dados do usuário:', error);
     } finally {
@@ -95,7 +96,15 @@ const useUserData = () => {
     }
   };
 
-  return { userData, loading, login, searchUserData };
+  const autoLogin = (token: string | null) => {
+    if(token) {
+      navigate('/profile')
+    }
+  }
+
+  return { searchUserData, loading, login, autoLogin };
 };
+
+
 
 export default useUserData;
