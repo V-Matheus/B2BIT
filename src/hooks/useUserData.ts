@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 interface LoginProps {
   tokens: {
@@ -59,7 +60,16 @@ const useUserData = () => {
       if (email === 'cliente@youdrive.com' && password === 'password')
         navigate('/profile');
     } catch (error) {
-      console.error('Erro ao fazer login:', error);
+      toast.error('Invalid email or password', {
+        position: 'bottom-right',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'light',
+      });
     } finally {
       setLoading(false);
     }
@@ -68,7 +78,6 @@ const useUserData = () => {
   const searchUserData = async (token: string | null) => {
     try {
       setLoading(true);
-      // const token = localStorage.getItem('tokenUser');
 
       if (!token) {
         navigate('/');
@@ -90,21 +99,28 @@ const useUserData = () => {
       const userData: SearchUserDataProps = await response.json();
       return userData;
     } catch (error) {
-      console.error('Erro ao buscar dados do usuário:', error);
+      toast.error('Error when fetching user data', {
+        position: 'bottom-right',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'light',
+      });
     } finally {
       setLoading(false);
     }
   };
 
   const autoLogin = (token: string | null) => {
-    if(token) {
-      navigate('/profile')
+    if (token) {
+      navigate('/profile');
     }
-  }
+  };
 
   return { searchUserData, loading, login, autoLogin };
 };
-
-
 
 export default useUserData;
