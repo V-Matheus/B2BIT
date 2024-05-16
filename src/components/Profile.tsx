@@ -2,6 +2,7 @@ import profileSkeleton from '../assets/profileSkeleton.jpg';
 import { useNavigate } from 'react-router-dom';
 import useUserData from '../hooks/useUserData';
 import { useEffect, useState } from 'react';
+import { Helmet } from 'react-helmet';
 
 interface UserDadosProps {
   name: string;
@@ -38,6 +39,15 @@ export const Profile: React.FC = () => {
 
   return (
     <>
+      <Helmet>
+        <title>B2BIT | Profile</title>
+        <meta
+          name="description"
+          content="View and manage your personal information on your B2BIT profile page."
+        />
+        <meta name="robots" content="noindex, nofollow" />
+      </Helmet>
+
       <header className="fixed top-0 left-0 w-full bg-white z-10">
         <div className="flex justify-end">
           <button
@@ -70,11 +80,14 @@ export const Profile: React.FC = () => {
 
         <div className="flex flex-col gap-4">
           <div className="flex w-full flex-col">
-            <p className="text-lg font-normal" data-testId='name-p'>
+            <p className="text-lg font-normal" data-testId="name-p">
               Your <strong>Name</strong>
             </p>
 
-            <h1 className="font-normal bg-gray-100 pl-2 rounded-md w-full"  data-testid="name-h1">
+            <h1
+              className="font-normal bg-gray-100 pl-2 rounded-md w-full"
+              data-testid="name-h1"
+            >
               {loading ? (
                 <div
                   className="inline-block h-6 w-6 animate-spin rounded-full border-4 border-solid border-current border-e-transparent align-[-0.125em] text-surface motion-reduce:animate-[spin_1.5s_linear_infinite] dark:text-black"
@@ -87,11 +100,14 @@ export const Profile: React.FC = () => {
           </div>
 
           <div className="flex w-full flex-col">
-            <p className="text-lg font-normal" data-testId='email-p'>
+            <p className="text-lg font-normal" data-testId="email-p">
               Your <strong>E-mail</strong>
             </p>
 
-            <h1 className="font-normal bg-gray-100 pl-2 rounded-md w-full" data-testid="email-h1">
+            <h1
+              className="font-normal bg-gray-100 pl-2 rounded-md w-full"
+              data-testid="email-h1"
+            >
               {loading ? (
                 <div
                   className="inline-block h-6 w-6 animate-spin rounded-full border-4 border-solid border-current border-e-transparent align-[-0.125em] text-surface motion-reduce:animate-[spin_1.5s_linear_infinite] dark:text-black"
