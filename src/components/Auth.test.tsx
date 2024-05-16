@@ -3,13 +3,6 @@ import { Auth } from './Auth';
 import { BrowserRouter } from 'react-router-dom';
 import '@testing-library/jest-dom';
 
-const mockAutoLogin = jest.fn();
-
-jest.mock('../hooks/useUserData', () => ({
-  ...jest.requireActual('../hooks/useUserData'),
-  autoLogin: () => mockAutoLogin,
-}));
-
 describe('Auth > Unit tests', () => {
   it('should render Auth component without errors', () => {
     render(

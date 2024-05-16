@@ -63,24 +63,18 @@ export const Profile: React.FC = () => {
               className="rounded-lg"
               src={userDados.avatar ? userDados.avatar : profileSkeleton}
               width={58}
-              alt=""
+              alt="profile image"
             />
           )}
         </div>
 
         <div className="flex flex-col gap-4">
           <div className="flex w-full flex-col">
-            <p className="text-lg font-normal">
+            <p className="text-lg font-normal" data-testId='name-p'>
               Your <strong>Name</strong>
             </p>
 
-            {/* <input
-              disabled
-              className="font-normal bg-gray-100 pl-2 rounded-md w-full"
-              value={userDados.name}
-            /> */}
-
-            <h1 className="font-normal bg-gray-100 pl-2 rounded-md w-full">
+            <h1 className="font-normal bg-gray-100 pl-2 rounded-md w-full"  data-testid="name-h1">
               {loading ? (
                 <div
                   className="inline-block h-6 w-6 animate-spin rounded-full border-4 border-solid border-current border-e-transparent align-[-0.125em] text-surface motion-reduce:animate-[spin_1.5s_linear_infinite] dark:text-black"
@@ -93,11 +87,11 @@ export const Profile: React.FC = () => {
           </div>
 
           <div className="flex w-full flex-col">
-            <label className="text-lg font-normal">
+            <p className="text-lg font-normal" data-testId='email-p'>
               Your <strong>E-mail</strong>
-            </label>
+            </p>
 
-            <h1 className="font-normal bg-gray-100 pl-2 rounded-md w-full">
+            <h1 className="font-normal bg-gray-100 pl-2 rounded-md w-full" data-testid="email-h1">
               {loading ? (
                 <div
                   className="inline-block h-6 w-6 animate-spin rounded-full border-4 border-solid border-current border-e-transparent align-[-0.125em] text-surface motion-reduce:animate-[spin_1.5s_linear_infinite] dark:text-black"

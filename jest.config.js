@@ -1,7 +1,12 @@
 module.exports = {
   transform: {
     '^.+\\.tsx?$': 'ts-jest',
-    '\\.svg$': 'jest-transform-stub',
   },
   testEnvironment: 'jsdom',
+  transformIgnorePatterns: [
+    '/node_modules/',
+  ],
+  moduleNameMapper: {
+    '\\.(jpg|jpeg|png|gif|webp|svg)$': '<rootDir>/__mocks__/fileMock.js',
+  },
 };
