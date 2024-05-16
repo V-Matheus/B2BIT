@@ -35,12 +35,6 @@ const useUserData = () => {
   const login = async (email: string, password: string) => {
     try {
       setLoading(true);
-      const token = localStorage.getItem('tokenUser');
-      if (token) {
-        navigate('/profile');
-        return null;
-      }
-
       const response = await axios.post(
         'https://api.homologation.cliqdrive.com.br/auth/login/',
         { email, password },

@@ -57,6 +57,7 @@ export const Auth: React.FC = () => {
                 name="email"
                 id="email"
                 type="email"
+                data-testid="email-field"
                 placeholder="@gmail.com"
                 onBlur={() => setTouched({ ...touched, email: true })}
               />
@@ -83,6 +84,7 @@ export const Auth: React.FC = () => {
                 name="password"
                 id="password"
                 type="password"
+                data-testid="password-field"
                 placeholder="****************"
                 onBlur={() => setTouched({ ...touched, password: true })}
               />
