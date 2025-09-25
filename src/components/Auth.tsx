@@ -4,8 +4,10 @@ import * as Yup from 'yup';
 import useUserData from '../hooks/useUserData';
 import { useEffect } from 'react';
 import { Helmet } from 'react-helmet';
+import { Button } from './ui/button';
+import { Loader2Icon } from 'lucide-react';
 
-export const Auth: React.FC = () => {
+export function Auth() {
   const LoginSchema = Yup.object().shape({
     email: Yup.string().email('Invalid email').required('Required'),
     password: Yup.string()
@@ -103,24 +105,16 @@ export const Auth: React.FC = () => {
                 />
               </div>
 
-              <button
-                type="submit"
-                className="bg-blue-950 text-gray-100 rounded-lg mt-5 flex items-center justify-center gap-5 h-14 hover:bg-blue-700 transition-all"
+              <Button
+                className="bg-[#02274F] text-white hover:bg-[#02274F]/90 h-10"
                 disabled={loading}
               >
-                {loading ? (
-                  <div
-                    className="inline-block h-6 w-6 animate-spin rounded-full border-4 border-solid border-current border-e-transparent align-[-0.125em] text-surface motion-reduce:animate-[spin_1.5s_linear_infinite] dark:text-white"
-                    role="status"
-                  ></div>
-                ) : (
-                  'Sign In'
-                )}
-              </button>
+                {loading ? <Loader2Icon className="animate-spin" /> : 'Sign In'}
+              </Button>
             </Form>
           )}
         </Formik>
       </main>
     </>
   );
-};
+}
