@@ -10,7 +10,7 @@ describe('Auth > Unit tests', () => {
         <Auth />
       </BrowserRouter>,
     );
-
+''
     const logoImage = screen.getByAltText('Logo b2bit');
     expect(logoImage).toBeInTheDocument();
 

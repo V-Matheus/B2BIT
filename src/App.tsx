@@ -9,7 +9,6 @@ const App: React.FC = () => {
     <div className="bg-gray-200 h-screen flex items-center justify-center">
       <ToastContainer />
       <Outlet />
-      
     </div>
   );
 };
