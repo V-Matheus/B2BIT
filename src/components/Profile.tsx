@@ -6,10 +6,12 @@ import { Button } from './ui/button';
 import { Loader2 } from 'lucide-react';
 import { Label } from './ui/label';
 import { Input } from './ui/input';
+import { useNavigate } from 'react-router-dom';
 
 export function Profile() {
   const [userDados, setUserDados] = useState<UserProps | null>(null);
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const fetchUserData = useCallback(async () => {
     try {
@@ -23,6 +25,11 @@ export function Profile() {
     }
   }, []);
 
+  const logout = useCallback(() => {
+    signOut();
+    navigate('/');
+  }, [navigate]);
+
   useEffect(() => {
     fetchUserData();
   }, [fetchUserData]);
@@ -32,7 +39,7 @@ export function Profile() {
       <header className="fixed top-0 left-0 w-full bg-white z-10">
         <div className="flex justify-end">
           <Button
-            onClick={signOut}
+            onClick={logout}
             className="bg-[#02274F] hover:bg-[#02274F]/90  text-gray-100 rounded-lg m-4 w-40 transition-all"
           >
             Logout

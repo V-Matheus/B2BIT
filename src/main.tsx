@@ -6,6 +6,7 @@ import './styles/globalStyles.css';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { Profile } from './components/Profile.tsx';
 import { Auth } from './components/Auth.tsx';
+import { middleware } from './middleware.ts';
 
 const router = createBrowserRouter([
   {
@@ -15,12 +16,18 @@ const router = createBrowserRouter([
       {
         path: '/',
         element: <Auth />,
+        loader: ({ request }) => middleware(request),
       },
       {
         path: '/profile',
         element: <Profile />,
+        loader: ({ request }) => middleware(request),
       },
     ],
+  },
+  {
+    path: '*',
+    loader: ({ request }) => middleware(request),
   },
 ]);
 
