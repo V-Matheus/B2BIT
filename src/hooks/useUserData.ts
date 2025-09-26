@@ -104,13 +104,7 @@ const useUserData = () => {
     }
   };
 
-  const autoLogin = (token: string | null) => {
-    if (token) {
-      navigate('/profile');
-    }
-  };
-
-  return { searchUserData, loading, login, autoLogin };
+  return { searchUserData, loading, login };
 };
 
 export default useUserData;

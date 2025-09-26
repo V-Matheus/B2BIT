@@ -6,7 +6,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 const App: React.FC = () => {
   return (
-    <div className="bg-gray-200 h-screen flex items-center justify-center">
+    <div className="bg-white h-screen flex items-center justify-center">
       <ToastContainer />
       <Outlet />
     </div>

@@ -1,119 +1,108 @@
 import logo from '../assets/logo.svg';
-import { Formik, Form, Field } from 'formik';
-import * as Yup from 'yup';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
 import useUserData from '../hooks/useUserData';
-import { useEffect } from 'react';
-import { Helmet } from 'react-helmet';
 import { Button } from './ui/button';
 import { Loader2Icon } from 'lucide-react';
+import { Input } from './ui/input';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from './ui/form';
+import { useForm } from 'react-hook-form';
+
+const LoginSchema = z.object({
+  email: z.string().min(1, 'Email is required').email('Invalid email address'),
+  password: z
+    .string()
+    .min(1, 'Password is required')
+    .min(3, 'Password must be at least 3 characters'),
+});
+
+type LoginFormValues = z.infer<typeof LoginSchema>;
 
 export function Auth() {
-  const LoginSchema = Yup.object().shape({
-    email: Yup.string().email('Invalid email').required('Required'),
-    password: Yup.string()
-      .min(3, 'Too Short!')
-      .max(70, 'Too Long!')
-      .required('Required'),
+  const form = useForm<LoginFormValues>({
+    resolver: zodResolver(LoginSchema),
+    defaultValues: {
+      email: '',
+      password: '',
+    },
   });
+  const { loading } = useUserData();
 
-  const { login, autoLogin, loading } = useUserData();
-
-  useEffect(() => {
-    const token = localStorage.getItem('tokenUser');
-    autoLogin(token);
-  }, [autoLogin]);
+  const onSubmit = async (values: LoginFormValues) => {
+    console.log('Form Values:', values);
+  };
 
   return (
     <>
-      <Helmet>
+      {/* <Helmet>
         <title>B2BIT | Login</title>
         <meta
           name="description"
           content="Streamline access to your account with our secure login page."
         />
         <link rel="canonical" href="/" />
-      </Helmet>
+      </Helmet> */}
 
-      <main className="border-4 border-none py-8 px-5 w-[438px] shadow-3xl rounded-3xl">
+      <main className="flex flex-col border-4 border-none py-8 px-5 w-[438px] shadow-3xl rounded-3xl bg-white gap-5">
         <div className="flex justify-center">
           <img src={logo} width="309.6px" height="94.81px" alt="Logo b2bit" />
         </div>
 
-        <Formik
-          initialValues={{
-            email: '',
-            password: '',
-          }}
-          validationSchema={LoginSchema}
-          onSubmit={(values) => {
-            login(values.email, values.password);
-          }}
-        >
-          {({ errors, touched, setTouched }) => (
-            <Form action="" className="flex flex-col w-full gap-5 mt-5">
-              <div>
-                <div className="flex justify-between w-full">
-                  <label
-                    className="text-center text-lg self-center"
-                    htmlFor="email"
-                  >
-                    E-mail
-                  </label>
-                  {errors.email && touched.email && (
-                    <span className="text-red-400">{errors.email}</span>
-                  )}
-                </div>
-                <Field
-                  className={`font-normal bg-gray-100 pl-2 rounded-md w-full ${
-                    errors.email && touched.email
-                      ? 'border-2 border-red-400'
-                      : ''
-                  }`}
-                  name="email"
-                  id="email"
-                  type="email"
-                  data-testid="email-field"
-                  placeholder="@gmail.com"
-                  onBlur={() => setTouched({ ...touched, email: true })}
-                />
-              </div>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)}>
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="font-bold">Email</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="email"
+                      className="placeholder:font-light"
+                      placeholder="@gmail.com"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-              <div>
-                <div className="flex justify-between w-full">
-                  <label
-                    className="text-center text-lg self-center"
-                    htmlFor="password"
-                  >
-                    Password
-                  </label>
-                  {errors.password && touched.password && (
-                    <span className="text-red-400">{errors.password}</span>
-                  )}
-                </div>
-                <Field
-                  className={`font-normal bg-gray-100 pl-2 rounded-md w-full ${
-                    errors.password && touched.password
-                      ? 'border-2 border-red-400'
-                      : ''
-                  }`}
-                  name="password"
-                  id="password"
-                  type="password"
-                  data-testid="password-field"
-                  placeholder="****************"
-                  onBlur={() => setTouched({ ...touched, password: true })}
-                />
-              </div>
+            <FormField
+              control={form.control}
+              name="password"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="font-bold">Password</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="password"
+                      className="placeholder:font-light"
+                      placeholder="Your Password"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-              <Button
-                className="bg-[#02274F] text-white hover:bg-[#02274F]/90 h-10"
-                disabled={loading}
-              >
-                {loading ? <Loader2Icon className="animate-spin" /> : 'Sign In'}
-              </Button>
-            </Form>
-          )}
-        </Formik>
+            <Button
+              className="mt-5 bg-[#02274F] text-white hover:bg-[#02274F]/90 h-10 w-full"
+              disabled={loading}
+            >
+              {loading ? <Loader2Icon className="animate-spin" /> : 'Sign In'}
+            </Button>
+          </form>
+        </Form>
       </main>
     </>
   );
