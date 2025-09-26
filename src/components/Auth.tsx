@@ -1,109 +1,140 @@
 import logo from '../assets/logo.svg';
-import { z } from 'zod';
-import { zodResolver } from '@hookform/resolvers/zod';
-import useUserData from '../hooks/useUserData';
 import { Button } from './ui/button';
-import { Loader2Icon } from 'lucide-react';
+import { Loader2 } from 'lucide-react';
 import { Input } from './ui/input';
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from './ui/form';
-import { useForm } from 'react-hook-form';
+import { login } from '@/services/auth';
+import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
+import { Formik, Form, Field, ErrorMessage, FieldProps } from 'formik';
+import * as Yup from 'yup';
+import { Label } from './ui/label';
+import { useState } from 'react';
 
-const LoginSchema = z.object({
-  email: z.string().min(1, 'Email is required').email('Invalid email address'),
-  password: z
-    .string()
-    .min(1, 'Password is required')
-    .min(3, 'Password must be at least 3 characters'),
+const LoginSchema = Yup.object({
+  email: Yup.string()
+    .email('Invalid email address')
+    .required('Email is required'),
+  password: Yup.string()
+    .min(3, 'Password must be at least 3 characters')
+    .required('Password is required'),
 });
 
-type LoginFormValues = z.infer<typeof LoginSchema>;
+interface LoginFormValues {
+  email: string;
+  password: string;
+}
 
 export function Auth() {
-  const form = useForm<LoginFormValues>({
-    resolver: zodResolver(LoginSchema),
-    defaultValues: {
-      email: '',
-      password: '',
-    },
-  });
-  const { loading } = useUserData();
+  const [loading, setLoading] = useState(false);
 
-  const onSubmit = async (values: LoginFormValues) => {
-    console.log('Form Values:', values);
+  const initialValues: LoginFormValues = {
+    email: '',
+    password: '',
+  };
+
+  const navigate = useNavigate();
+
+  const handleSubmit = async ({ email, password }: LoginFormValues) => {
+    try {
+      setLoading(true);
+      const user = await login({ email, password });
+
+      if (user) navigate('/profile');
+    } catch (error) {
+      console.error('Login error:', error);
+
+      toast.error('Invalid email or password', {
+        position: 'bottom-right',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'light',
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <>
-      {/* <Helmet>
-        <title>B2BIT | Login</title>
-        <meta
-          name="description"
-          content="Streamline access to your account with our secure login page."
-        />
-        <link rel="canonical" href="/" />
-      </Helmet> */}
+    <main className="flex flex-col border-4 border-none py-8 px-5 w-[438px] shadow-3xl rounded-3xl bg-white gap-5">
+      <div className="flex justify-center">
+        <img src={logo} width="309.6px" height="94.81px" alt="Logo b2bit" />
+      </div>
 
-      <main className="flex flex-col border-4 border-none py-8 px-5 w-[438px] shadow-3xl rounded-3xl bg-white gap-5">
-        <div className="flex justify-center">
-          <img src={logo} width="309.6px" height="94.81px" alt="Logo b2bit" />
-        </div>
+      <Formik
+        initialValues={initialValues}
+        validationSchema={LoginSchema}
+        onSubmit={handleSubmit}
+      >
+        {({ isSubmitting, errors, touched }) => (
+          <Form className="flex flex-col gap-5">
+            <div className="grid w-full items-center gap-3">
+              <Label htmlFor="email" className="font-bold">
+                Email
+              </Label>
+              <Field name="email">
+                {({ field }: FieldProps) => (
+                  <Input
+                    {...field}
+                    type="email"
+                    id="email"
+                    className={`placeholder:font-light ${
+                      errors.email && touched.email ? 'border-red-500' : ''
+                    }`}
+                    placeholder="@gmail.com"
+                  />
+                )}
+              </Field>
+              <ErrorMessage
+                name="email"
+                component="p"
+                className="text-sm text-red-500 font-medium"
+              />
+            </div>
 
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)}>
-            <FormField
-              control={form.control}
-              name="email"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="font-bold">Email</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="email"
-                      className="placeholder:font-light"
-                      placeholder="@gmail.com"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="password"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="font-bold">Password</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="password"
-                      className="placeholder:font-light"
-                      placeholder="Your Password"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            <div className="grid w-full items-center gap-3">
+              <Label htmlFor="password" className="font-bold">
+                Password
+              </Label>
+              <Field name="password">
+                {({ field }: FieldProps) => (
+                  <Input
+                    {...field}
+                    type="password"
+                    id="password"
+                    className={`placeholder:font-light ${
+                      errors.password && touched.password
+                        ? 'border-red-500'
+                        : ''
+                    }`}
+                    placeholder="Your Password"
+                  />
+                )}
+              </Field>
+              <ErrorMessage
+                name="password"
+                component="p"
+                className="text-sm text-red-500 font-medium"
+              />
+            </div>
 
             <Button
-              className="mt-5 bg-[#02274F] text-white hover:bg-[#02274F]/90 h-10 w-full"
-              disabled={loading}
+              type="submit"
+              className="bg-[#02274F] text-white hover:bg-[#02274F]/90 h-10 w-full"
+              disabled={loading || isSubmitting}
             >
-              {loading ? <Loader2Icon className="animate-spin" /> : 'Sign In'}
+              {loading || isSubmitting ? (
+                <Loader2 className="animate-spin" />
+              ) : (
+                'Sign In'
+              )}
             </Button>
-          </form>
-        </Form>
-      </main>
-    </>
+          </Form>
+        )}
+      </Formik>
+    </main>
   );
 }
