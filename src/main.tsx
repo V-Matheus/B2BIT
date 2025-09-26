@@ -6,7 +6,6 @@ import './styles/globalStyles.css';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { Profile } from './components/Profile.tsx';
 import { Auth } from './components/Auth.tsx';
-import { NotFound } from './components/NotFound.tsx';
 
 const router = createBrowserRouter([
   {
@@ -20,10 +19,6 @@ const router = createBrowserRouter([
       {
         path: '/profile',
         element: <Profile />,
-      },
-      {
-        path: '*',
-        element: <NotFound />,
       },
     ],
   },
