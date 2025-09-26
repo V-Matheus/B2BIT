@@ -1,61 +1,42 @@
 import profileSkeleton from '../assets/profileSkeleton.jpg';
-import { useNavigate } from 'react-router-dom';
-import useUserData from '../hooks/useUserData';
-import { useEffect, useState } from 'react';
-import { Helmet } from 'react-helmet';
+import { useCallback, useEffect, useState } from 'react';
+import { getUser, UserProps } from '@/services/user';
+import { signOut } from '@/services/auth';
+import { Button } from './ui/button';
+import { Loader2 } from 'lucide-react';
+import { Label } from './ui/label';
+import { Input } from './ui/input';
 
-interface UserDadosProps {
-  name: string;
-  email: string;
-  avatar: string | null;
-}
+export function Profile() {
+  const [userDados, setUserDados] = useState<UserProps | null>(null);
+  const [loading, setLoading] = useState(false);
 
-export const Profile: React.FC = () => {
-  const [userDados, setUserDados] = useState<UserDadosProps>({
-    name: '',
-    email: '',
-    avatar: '',
-  });
-
-  const navigate = useNavigate();
-
-  const { searchUserData, loading } = useUserData();
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const token = localStorage.getItem('tokenUser');
-      const userData = await searchUserData(token);
-      if (userData) setUserDados(userData);
-    };
-
-    fetchData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+  const fetchUserData = useCallback(async () => {
+    try {
+      setLoading(true);
+      const response = await getUser();
+      setUserDados(response);
+    } catch (error) {
+      console.error('Error fetching user data:', error);
+    } finally {
+      setLoading(false);
+    }
   }, []);
 
-  function handleLogout() {
-    localStorage.removeItem('tokenUser');
-    navigate('/');
-  }
+  useEffect(() => {
+    fetchUserData();
+  }, [fetchUserData]);
 
   return (
     <>
-      <Helmet>
-        <title>B2BIT | Profile</title>
-        <meta
-          name="description"
-          content="View and manage your personal information on your B2BIT profile page."
-        />
-        <meta name="robots" content="noindex, nofollow" />
-      </Helmet>
-
       <header className="fixed top-0 left-0 w-full bg-white z-10">
         <div className="flex justify-end">
-          <button
-            onClick={handleLogout}
-            className="bg-blue-950 text-gray-100 rounded-lg m-4 w-40 hover:bg-blue-700 transition-all"
+          <Button
+            onClick={signOut}
+            className="bg-[#02274F] hover:bg-[#02274F]/90  text-gray-100 rounded-lg m-4 w-40 transition-all"
           >
             Logout
-          </button>
+          </Button>
         </div>
       </header>
 
@@ -64,15 +45,12 @@ export const Profile: React.FC = () => {
           <h1>Profile picture</h1>
 
           {loading ? (
-            <div
-              className="inline-block h-6 w-6 animate-spin rounded-full border-4 border-solid border-current border-e-transparent align-[-0.125em] text-surface motion-reduce:animate-[spin_1.5s_linear_infinite] dark:text-black"
-              role="status"
-            ></div>
+            <Loader2 className="animate-spin" />
           ) : (
             <img
               className="rounded-lg"
-              src={userDados.avatar ? userDados.avatar : profileSkeleton}
-              width={58}
+              src={userDados?.avatar ? userDados.avatar.high : profileSkeleton}
+              width={100}
               alt="profile image"
             />
           )}
@@ -80,46 +58,20 @@ export const Profile: React.FC = () => {
 
         <div className="flex flex-col gap-4">
           <div className="flex w-full flex-col">
-            <p className="text-lg font-normal" data-testId="name-p">
+            <Label>
               Your <strong>Name</strong>
-            </p>
-
-            <h1
-              className="font-normal bg-gray-100 pl-2 rounded-md w-full"
-              data-testid="name-h1"
-            >
-              {loading ? (
-                <div
-                  className="inline-block h-6 w-6 animate-spin rounded-full border-4 border-solid border-current border-e-transparent align-[-0.125em] text-surface motion-reduce:animate-[spin_1.5s_linear_infinite] dark:text-black"
-                  role="status"
-                ></div>
-              ) : (
-                `${userDados.name}`
-              )}
-            </h1>
+            </Label>
+            <Input readOnly value={userDados?.name} />
           </div>
 
           <div className="flex w-full flex-col">
-            <p className="text-lg font-normal" data-testId="email-p">
+            <Label>
               Your <strong>E-mail</strong>
-            </p>
-
-            <h1
-              className="font-normal bg-gray-100 pl-2 rounded-md w-full"
-              data-testid="email-h1"
-            >
-              {loading ? (
-                <div
-                  className="inline-block h-6 w-6 animate-spin rounded-full border-4 border-solid border-current border-e-transparent align-[-0.125em] text-surface motion-reduce:animate-[spin_1.5s_linear_infinite] dark:text-black"
-                  role="status"
-                ></div>
-              ) : (
-                `${userDados.email}`
-              )}
-            </h1>
+            </Label>
+            <Input readOnly value={userDados?.email} />
           </div>
         </div>
       </main>
     </>
   );
-};
+}
