@@ -2,14 +2,13 @@
 
 ## Descrição do Projeto
 
-Este projeto foi desenvolvido como parte do processo seletivo para a vaga de Front-End na B2BIT Company. Trata-se de uma aplicação front-end moderna construída com tecnologias como React, TypeScript, Tailwind CSS e Vite.
-
-A B2BIT Company é uma software house constituída por profissionais multidisciplinares, com anos de experiência na criação de softwares. Nossa missão é transformar ideias em software, impactando mais de 200 mil usuários em todo o mundo.
+Este projeto foi desenvolvido como parte do processo seletivo para a vaga de Front-End na B2BIT. Trata-se de uma aplicação front-end construída com tecnologias como React, TypeScript, Tailwind CSS e Vite.
 
 ## Tecnologias Principais Utilizadas
 
 <ul>
   <li>React</li>
+  <li>Shadcn</li>
   <li>React Router DOM</li>
   <li>Formik</li>
   <li>Yup</li>
@@ -20,18 +19,16 @@ A B2BIT Company é uma software house constituída por profissionais multidiscip
   <li>Vite</li>
   <li>Tailwind CSS</li>
   <li>ESLint</li>
+  <li>Docker</li>
 </ul>
 
 ## Como Executar o Projeto
 
-1- Instalação das Dependências
-    npm install
-    
-2- Execução em Modo de Desenvolvimento
-    npm run dev
-    
-3-  Compilação para Produção
-    npm run build
+1- Copiar o projeto
+https://github.com/V-Matheus/B2BIT.git
+
+2- Rodar com docker e acessar a porta 3000
+docker compose up -d
 
 ## Contribuição
 
@@ -39,4 +36,4 @@ Contribuições são bem-vindas! Sinta-se à vontade para enviar pull requests o
 
 ---
 
-Este projeto foi desenvolvido por Victor Matheus como parte do processo seletivo para a vaga de Front-End na B2BIT Company.
+Este projeto foi desenvolvido por Victor Matheus como parte do processo seletivo para a vaga de Front-End na B2BIT.
