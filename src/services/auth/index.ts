@@ -1,7 +1,7 @@
 import { api } from '../api';
 import { destroyCookie, setCookie } from 'nookies';
 
-interface LoginProps {
+export interface LoginProps {
   tokens: {
     access: string;
     refresh: string;

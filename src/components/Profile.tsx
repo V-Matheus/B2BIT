@@ -9,7 +9,11 @@ import { Input } from './ui/input';
 import { useNavigate } from 'react-router-dom';
 
 export function Profile() {
-  const [userDados, setUserDados] = useState<UserProps | null>(null);
+  const [userDados, setUserDados] = useState<UserProps>({
+    name: '',
+    email: '',
+    avatar: null,
+  });
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
@@ -52,7 +56,7 @@ export function Profile() {
           <h1>Profile picture</h1>
 
           {loading ? (
-            <Loader2 className="animate-spin" />
+            <Loader2 data-testid="loader" className="animate-spin" />
           ) : (
             <img
               className="rounded-lg"

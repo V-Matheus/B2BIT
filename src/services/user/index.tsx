@@ -7,7 +7,7 @@ export interface UserProps {
     high: string;
     low: string;
     medium: string;
-  }
+  } | null;
 }
 
 export async function getUser() {
